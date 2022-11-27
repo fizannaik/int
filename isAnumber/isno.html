@@ -1,0 +1,27 @@
+<html>
+<head></head>
+<body>
+<h1>isNaN() example</h1>
+
+<script type="text/javascript">
+function checkInp()
+{
+  var x=document.forms["myForm"]["num"].value;
+  if (isNaN(x)) 
+  {
+    alert("not a no");
+   
+  }
+  else
+  {
+    alert("is a number");
+    
+  }
+}
+</script>
+<form name="myForm" action="" onsubmit="return checkInp()">
+   number: <input type="text" name="num">
+<input type="submit" value="Submit">  
+
+</body>
+</html>

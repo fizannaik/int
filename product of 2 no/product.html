@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		Window prompt() Method
+	</title>
+</head>
+
+<body style="text-align: center;">
+
+	<h1 style="color:green;">
+		product
+	</h1>
+	
+	<button onclick="geek()">
+		Enter numbers
+	</button>
+    
+
+	<p id="g"></p>
+
+
+
+	<script>
+		function geek() {
+		
+			var doc = prompt("enter 1st"
+				);
+                var doc1 = prompt("enter 2nd"
+				);
+		
+			if (doc != null && doc1 != null) {
+				document.getElementById("g").innerHTML =
+					"product is "+doc*doc1;
+			}
+            var doc = alert("Product is " +doc *doc1);
+		}
+        
+	</script>
+
+</body>
+
+</html>

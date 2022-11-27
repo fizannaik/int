@@ -1,0 +1,26 @@
+<html>
+    <style>input[type=text]:focus {
+        border: 3px solid #555;
+          background-color: #0da2d4;
+      }</style>
+<SCRIPT>function display()
+    {
+    var x=document.details.fname.value;
+    var y=document.details.lname.value;
+    var z=document.details.phnum.value;
+    alert("welcome "+x+" "+y);
+    }
+    const btn = document.getElementById('btn');
+  
+</SCRIPT>
+<body>
+<form name=details>
+<table>
+ <tr><td>ENTER  FIRST NAME:<input type=text  name=fname></td></tr>
+ <tr><td>ENTER  LAST  NAME:<input type=text  name=lname></td></tr>
+ <tr><td>ENTER  PHONE NUM :<input type=text  name=phnum></td></tr>
+</table>
+<input id="btn" type="button" value="Click Me" onclick="display() ;">
+ </form>
+</body>
+</html>

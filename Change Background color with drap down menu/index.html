@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Background color with drap down menu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <section>
+        <div class="bg">Red</div>
+        <select name="" class="selectColor" onchange="changeColor
+        (this)">
+            <option value="#ff2323" >Red</option>
+            <option value="#66ff00">Green</option>
+            <option value="#9b1fe8">Purple</option>
+            <option value="#ffff12">Yellow</option>
+            <option value="#ff69b4">Pink</option>
+        </select>
+    </section>
+
+    <script>
+        function changeColor(getColor){
+            let bg = document.querySelector('.bg');
+            let seclectColor = getColor.value;
+            let text = getColor.options[getColor.selectedIndex]
+            .text;
+            bg.style.background = seclectColor;
+            bg.innerHTML = text;
+            alert(seclectColor)
+        }
+    </script>
+
+</body>
+</html>

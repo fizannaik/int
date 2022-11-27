@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		Window prompt() Method
+	</title>
+</head>
+
+<body style="text-align: center;">
+
+	<h1 style="color:green;">
+		Login form
+	</h1>
+	
+	<button onclick="geek()">
+		Enter your name
+	</button>
+    
+
+	<p id="g"></p>
+
+
+
+	<script>
+		function geek() {
+		
+			var doc = prompt("enter name"
+				);
+                var doc1 = prompt("enter sirname"
+				);
+		
+			if (doc != null && doc1 != null) {
+				document.getElementById("g").innerHTML =
+					"Welcome " + doc +" "+ doc1;
+			}
+            var doc = alert("welcome " +doc +" "+ doc1);
+		}
+        
+	</script>
+
+</body>
+
+</html>

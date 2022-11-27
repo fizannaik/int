@@ -1,0 +1,16 @@
+body{
+    margin: 0;
+}
+p{
+    margin: 10px;
+    font-size: medium;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+p:hover{
+    cursor: pointer;
+   font-family:fantasy;
+   background-color: aqua;
+   font-style: oblique;
+   float: left;
+   font-size:large;
+}
