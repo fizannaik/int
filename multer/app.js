@@ -1,93 +1,81 @@
-const express = require('express')
-const multer = require('multer');
-const fs = require('file-system');
-const MongoClient = require('mongodb').MongoClient
-const ObjectId = require('mongodb').ObjectId;
-const myurl = 'mongodb://localhost:27017';
-
-//CREATE EXPRESS APP
-const app = express();
-app.use(express.json());
-
-// SET STORAGE
+const express = require("express")
+const path = require("path")
+const multer = require("multer")
+const app = express()
+	
+// View Engine Setup
+app.set("views",path.join(__dirname,"views"))
+app.set("view engine","ejs")
+	
+// var upload = multer({ dest: "Upload_folder_name" })
+// If you do not want to use diskStorage then uncomment it
+	
 var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads')
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now())
-    }
+	destination: function (req, file, cb) {
+
+		// Uploads is the Upload_folder_name
+		cb(null, "uploads")
+	},
+	filename: function (req, file, cb) {
+	cb(null, file.fieldname + "-" + Date.now()+".jpg")
+	}
 })
+	
+// Define the maximum size for uploading
+// picture i.e. 1 MB. it is optional
+const maxSize = 1 * 1000 * 1000;
+	
+var upload = multer({
+	storage: storage,
+	limits: { fileSize: maxSize },
+	fileFilter: function (req, file, cb){
+	
+		// Set the filetypes, it is optional
+		var filetypes = /jpeg|jpg|png/;
+		var mimetype = filetypes.test(file.mimetype);
 
-var upload = multer({ storage: storage })
+		var extname = filetypes.test(path.extname(
+					file.originalname).toLowerCase());
+		
+		if (mimetype && extname) {
+			return cb(null, true);
+		}
+	
+		cb("Error: File upload only supports the "
+				+ "following filetypes - " + filetypes);
+	}
 
-MongoClient.connect(myurl, (err, client) => {
-  if (err) return console.log(err)
-  db = client.db('test')
-  app.listen(3000, () => {
-      console.log('Database connected successfully')
-      console.log('Server started on port 3000')
-  })
+// mypic is the name of file attribute
+}).single("mypic");	
+
+app.get("/",function(req,res){
+	res.render("Signup");
 })
-//ROUTES WILL GO HERE
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+	
+app.post("/uploadProfilePicture",function (req, res, next) {
+		
+	// Error MiddleWare for multer file upload, so if any
+	// error occurs, the image would not be uploaded!
+	upload(req,res,function(err) {
 
-app.post('/uploadfile', upload.single('myFile'), (req, res, next) => {
-    const file = req.file
-    if (!file) {
-        const error = new Error('Please upload a file')
-        error.httpStatusCode = 400
-        return next(error)
-    }
-    res.send(file)
+		if(err) {
+
+			// ERROR occurred (here it can be occurred due
+			// to uploading image of size greater than
+			// 1MB or uploading different file type)
+			res.send(err)
+		}
+		else {
+
+			// SUCCESS, image successfully uploaded
+			res.send("Success, Image uploaded!")
+		}
+	})
 })
-
-//Uploading multiple files
-app.post('/uploadmultiple', upload.array('myFiles', 12), (req, res, next) => {
-    const files = req.files
-    if (!files) {
-        const error = new Error('Please choose files')
-        error.httpStatusCode = 400
-        return next(error)
-    }
-    res.send(files)
-})
-
-
-app.post('/uploadphoto', upload.single('myImage'), (req, res) => {
-    var img = fs.readFileSync(req.file.path);
-    var encode_image = img.toString('base64');
-    // Define a JSONobject for the image attributes for saving to database
-
-    var finalImg = {
-        contentType: req.file.mimetype,
-        image: Buffer.from(encode_image, 'base64')
-    };
-    db.collection('myCollection').insertOne(finalImg, (err, result) => {
-        console.log(result)
-        if (err) return console.log(err)
-        console.log('saved to database')
-        res.redirect('/')
-    })
-})
-
-app.get('/photos', (req, res) => {
-    db.collection('myCollection').find().toArray((err, result) => {
-        const imgArray = result.map(element => element._id);
-        console.log(imgArray);
-        if (err) return console.log(err)
-        res.send(imgArray)
-
-    })
-});
-
-app.get('/photo/:id', (req, res) => {
-    var filename = req.params.id;
-    db.collection('myCollection').findOne({ '_id': ObjectId(filename) }, (err, result) => {
-        if (err) return console.log(err)
-        res.contentType('image/jpeg');
-        res.send(result.image.buffer)
-    })
+	
+// Take any port number of your choice which
+// is not taken by any other process
+app.listen(8080,function(error) {
+	if(error) throw error
+		console.log("Server created Successfully on PORT 8080")
 })
